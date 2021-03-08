@@ -26,6 +26,8 @@ public class Money {
         return Objects.hash(amount, currency);
     }
 
+
+
     public BigDecimal getAmount() {
         return amount;
     }
@@ -40,5 +42,13 @@ public class Money {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public int compareTo(Money totalCost) {
+
+        if(this.equals(totalCost))
+            return 0;
+
+        return this.getAmount().compareTo(totalCost.amount);
     }
 }
