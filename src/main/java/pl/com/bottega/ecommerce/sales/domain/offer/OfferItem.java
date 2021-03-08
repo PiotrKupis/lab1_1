@@ -22,24 +22,19 @@ public class OfferItem {
     private Money totalCost;
     private Discount discount;
 
-    public OfferItem(String productId, BigDecimal productPrice, String productName, Date productSnapshotDate,
-                     String productType, int quantity) {
-        this(productId, productPrice, productName, productSnapshotDate, productType, quantity, null, null);
-    }
 
     public OfferItem(String productId, BigDecimal productPrice, String productName, Date productSnapshotDate,
-                     String productType, int quantity, BigDecimal discount, String discountCause) {
-        this.product = new Product(productId, productType, productName, productSnapshotDate, new Money(productPrice, "Euro"));
+                     String productType, int quantity, BigDecimal discount, String discountCause, String currency) {
 
+        this.product = new Product(productId, productType, productName, productSnapshotDate, new Money(productPrice, currency));
         this.quantity = quantity;
-        this.discount = new Discount(discountCause, new Money(discount, "Euro"));
+        this.discount = new Discount(discountCause, new Money(discount, currency));
 
         BigDecimal discountValue = new BigDecimal(0);
         if (discount != null) {
             discountValue = discountValue.subtract(discount);
         }
-
-        this.totalCost = new Money(productPrice.multiply(new BigDecimal(quantity)).subtract(discountValue), "Euro");
+        this.totalCost = new Money(productPrice.multiply(new BigDecimal(quantity)).subtract(discountValue), currency);
     }
 
     public String getProductId() {
@@ -179,7 +174,7 @@ public class OfferItem {
         } else if (!product.getId().equals(other.product.getId())) {
             return false;
         }
-        if (product.getType() != other.product.getType()) {
+        if (!product.getType().equals(other.product.getType())) {
             return false;
         }
 
@@ -202,5 +197,4 @@ public class OfferItem {
 
         return acceptableDelta.compareTo(difference) > 0;
     }
-
 }
