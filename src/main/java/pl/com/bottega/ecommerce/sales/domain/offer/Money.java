@@ -27,7 +27,6 @@ public class Money {
     }
 
 
-
     public BigDecimal getAmount() {
         return amount;
     }
@@ -46,7 +45,7 @@ public class Money {
 
     public int compareTo(Money totalCost) {
 
-        if(this.equals(totalCost))
+        if (this.equals(totalCost))
             return 0;
 
         return this.getAmount().compareTo(totalCost.amount);

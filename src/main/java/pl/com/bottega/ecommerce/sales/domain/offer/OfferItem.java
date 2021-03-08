@@ -17,17 +17,10 @@ import java.util.Date;
 
 public class OfferItem {
 
-    // product
     private Product product;
-
     private int quantity;
-
     private Money totalCost;
-
-    // discount
-    private String discountCause;
-
-    private BigDecimal discount;
+    private Discount discount;
 
     public OfferItem(String productId, BigDecimal productPrice, String productName, Date productSnapshotDate,
                      String productType, int quantity) {
@@ -39,15 +32,14 @@ public class OfferItem {
         this.product = new Product(productId, productType, productName, productSnapshotDate, new Money(productPrice, "Euro"));
 
         this.quantity = quantity;
-        this.discount = discount;
-        this.discountCause = discountCause;
+        this.discount = new Discount(discountCause, new Money(discount, "Euro"));
 
         BigDecimal discountValue = new BigDecimal(0);
         if (discount != null) {
             discountValue = discountValue.subtract(discount);
         }
 
-        this.totalCost.setAmount(productPrice.multiply(new BigDecimal(quantity)).subtract(discountValue));
+        this.totalCost = new Money(productPrice.multiply(new BigDecimal(quantity)).subtract(discountValue), "Euro");
     }
 
     public String getProductId() {
@@ -78,12 +70,12 @@ public class OfferItem {
         return totalCost.getCurrency();
     }
 
-    public BigDecimal getDiscount() {
-        return discount;
+    public Money getDiscount() {
+        return discount.getDiscount();
     }
 
     public String getDiscountCause() {
-        return discountCause;
+        return discount.getDiscountCause();
     }
 
     public int getQuantity() {
